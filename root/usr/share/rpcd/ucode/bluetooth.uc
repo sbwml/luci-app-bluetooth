@@ -167,6 +167,85 @@ const methods = {
             run_btctl(`system-alias ${shellquote(req.args.alias)}`);
             return { success: true };
         }
+    },
+
+    set_codec: {
+        args: { data: {} },
+        call: function(req) {
+            try {
+                if (!req.args.data) {
+                    return { success: false, error: 'Invalid request: "data" object is missing.' };
+                }
+
+                const mac = req.args.data.mac;
+                const codec = req.args.data.codec;
+
+                if (!mac) return { success: false, error: 'MAC address required in data object.' };
+                if (!codec) return { success: false, error: 'Codec required in data object.' };
+
+                const bluealsa_mac = replace(mac, /:/g, '_');
+                const bluealsa_path = `/org/bluealsa/hci0/dev_${bluealsa_mac}/a2dpsrc/sink`;
+                const cmd = `bluealsactl codec ${shellquote(bluealsa_path)} ${shellquote(codec)} 2>&1`;
+
+                const handle = popen(cmd, 'r');
+                if (!handle) {
+                    return { success: false, error: 'Failed to execute command via popen.' };
+                }
+
+                const output = handle.read('all');
+                handle.close();
+
+                if (output && trim(output).length > 0) {
+                    return { success: false, error: 'Command execution failed.', details: trim(output) };
+                }
+
+                return { success: true };
+            } catch (e) {
+                return { success: false, error: 'An unexpected exception occurred.', details: e.message };
+            }
+        }
+    },
+
+    set_volume: {
+        args: { data: {} },
+        call: function(req) {
+            try {
+                if (!req.args.data) {
+                    return { success: false, error: 'Invalid request: "data" object is missing.' };
+                }
+
+                const mac = req.args.data.mac;
+                const volume = req.args.data.volume;
+
+                if (!mac) {
+                    return { success: false, error: 'MAC address required in data object.' };
+                }
+
+                if (volume == null) {
+                    return { success: false, error: 'Volume required in data object.' };
+                }
+
+                const bluealsa_mac = replace(mac, /:/g, '_');
+                const bluealsa_path = `/org/bluealsa/hci0/dev_${bluealsa_mac}/a2dpsrc/sink`;
+                const cmd = `bluealsactl volume ${shellquote(bluealsa_path)} ${volume} 2>&1`;
+
+                const handle = popen(cmd, 'r');
+                if (!handle) {
+                    return { success: false, error: 'Failed to execute command via popen.' };
+                }
+
+                const output = handle.read('all');
+                handle.close();
+
+                if (output && trim(output).length > 0) {
+                    return { success: false, error: 'Command execution failed.', details: trim(output) };
+                }
+
+                return { success: true };
+            } catch (e) {
+                return { success: false, error: 'An unexpected exception occurred.', details: e.message };
+            }
+        }
     }
 };
 

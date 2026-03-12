@@ -59,6 +59,18 @@ var setAlias = rpc.declare({
     params: [ 'alias' ]
 });
 
+var setCodec = rpc.declare({
+    object: 'luci.bluetooth',
+    method: 'set_codec',
+    params: [ 'data' ]
+});
+
+var setVolume = rpc.declare({
+    object: 'luci.bluetooth',
+    method: 'set_volume',
+    params: [ 'data' ]
+});
+
 function renderStatus(status) {
     var spanTemp = '<em><span style="color:%s"><strong>%s</strong></span></em>';
     var renderHTML;
@@ -68,6 +80,42 @@ function renderStatus(status) {
         renderHTML = spanTemp.format('red', _('NOT RUNNING'));
     }
     return renderHTML;
+}
+
+function renderBluealsaTooltip(bluealsa) {
+    var entries = [];
+    if (!bluealsa) {
+        return E('div', {});
+    }
+
+    var keyToLabel = {
+        'sequence': _('Sequence'),
+        'transport': _('Transport'),
+        'mode': _('Mode'),
+        'running': _('Running'),
+        'format': _('Format'),
+        'channels': _('Channels'),
+        'channelMap': _('Channel Map'),
+        'rate': _('Rate'),
+        'availableCodecs': _('Available Codecs'),
+        'selectedCodec': _('Selected Codec'),
+        'delay': _('Delay'),
+        'clientDelay': _('Client Delay'),
+        'softVolume': _('Soft Volume'),
+        'volume': _('Volume'),
+        'mute': _('Mute')
+    };
+
+    for (var key in bluealsa) {
+        if (keyToLabel.hasOwnProperty(key)) {
+            var val = bluealsa[key];
+            if (typeof(val) === 'boolean') {
+                val = val ? _('Yes') : _('No');
+            }
+            entries.push(E('div', {}, '%s: %s'.format(keyToLabel[key], val)));
+        }
+    }
+    return E('div', {}, entries);
 }
 
 function renderDevices(devices, view) {
@@ -80,7 +128,6 @@ function renderDevices(devices, view) {
         E('th', { 'class': 'th cbi-section-table-cell' }, _('MAC Address')),
         E('th', { 'class': 'th cbi-section-table-cell' }, _('Paired')),
         E('th', { 'class': 'th cbi-section-table-cell' }, _('Bonded')),
-        E('th', { 'class': 'th cbi-section-table-cell' }, _('Trusted')),
         E('th', { 'class': 'th cbi-section-table-cell' }, _('Connected')),
         E('th', { 'class': 'th cbi-section-table-cell cbi-section-actions' }, _('Actions'))
     ]);
@@ -136,14 +183,113 @@ function renderDevices(devices, view) {
             buttons.push(removeBtn);
         }
 
+        var macCell;
+        if (dev.connected && dev.bluealsa) {
+            macCell = E('td', { 'class': 'td cbi-value-field cbi-tooltip-container' }, [
+                dev.mac,
+                E('span', { 'class': 'cbi-tooltip' }, renderBluealsaTooltip(dev.bluealsa))
+            ]);
+        } else {
+            macCell = E('td', { 'class': 'td cbi-value-field' }, dev.mac);
+        }
+
+        var connectedCell = E('td', { 'class': 'td cbi-value-field' }, dev.connected ? _('Yes') : _('No'));
+
+        return E('tr', { 'class': 'tr cbi-section-table-row' }, [
+            E('td', { 'class': 'td cbi-value-field' }, dev.name || dev.mac),
+            macCell,
+            E('td', { 'class': 'td cbi-value-field' }, dev.paired ? _('Yes') : _('No')),
+            E('td', { 'class': 'td cbi-value-field' }, dev.bonded ? _('Yes') : _('No')),
+            connectedCell,
+            E('td', { 'class': 'td cbi-section-table-cell nowrap cbi-section-actions' }, E('div', {}, buttons))
+        ]);
+    });
+
+    return E('table', { 'class': 'table cbi-section-table' }, [
+        E('thead', { 'class': 'thead cbi-section-thead' }, [ head ]),
+        E('tbody', { 'class': 'tbody cbi-section-tbody' }, rows)
+    ]);
+}
+
+function renderAudioDevices(devices, view) {
+    var audioDevices = devices.filter(function(dev) {
+        return dev.connected && dev.bluealsa;
+    });
+
+    if (audioDevices.length === 0) {
+        return E('em', {}, _('No audio devices connected.'));
+    }
+
+    var head = E('tr', { 'class': 'tr cbi-section-table-titles anonymous' }, [
+        E('th', { 'class': 'th cbi-section-table-cell' }, _('Name')),
+        E('th', { 'class': 'th cbi-section-table-cell' }, _('MAC Address')),
+        E('th', { 'class': 'th cbi-section-table-cell' }, _('Codec')),
+        E('th', { 'class': 'th cbi-section-table-cell' }, _('Volume')),
+        E('th', { 'class': 'th cbi-section-table-cell' }, _('Delay'))
+    ]);
+
+    var rows = audioDevices.map(function(dev) {
+        var codecId = 'codec-' + dev.mac;
+        var volumeId = 'volume-' + dev.mac;
+
+        var codecSelect = E('select', { 'id': codecId, 'style': 'width: 70px;' });
+        if (dev.bluealsa.availableCodecs) {
+            dev.bluealsa.availableCodecs.split(' ').forEach(function(codec) {
+                var option = E('option', { 'value': codec }, codec);
+                if (codec === dev.bluealsa.selectedCodec) {
+                    option.selected = 'selected';
+                }
+                codecSelect.appendChild(option);
+            });
+        }
+
+        var codecBtn = E('button', {
+            'class': 'btn cbi-button cbi-button-action',
+            'style': 'margin-left: 8px;',
+            'click': ui.createHandlerFn(view, function() {
+                var selectedCodec = document.getElementById(codecId).value;
+                return setCodec({ mac: dev.mac, codec: selectedCodec });
+            })
+        }, _('Set'));
+
+        const volumeMap = Array.from({ length: 11 }, function(_, i) {
+            const p = i * 10;
+            return { percent: p + '%', value: Math.round(p * 1.27) };
+        });
+
+        function findClosestVolumeStep(currentValue, map) {
+            return map.reduce(function(prev, curr) {
+                return (Math.abs(curr.value - currentValue) < Math.abs(prev.value - currentValue) ? curr : prev);
+            });
+        }
+
+        var volumeSelect = E('select', { 'id': volumeId, 'style': 'width: 70px;' });
+        var currentVolume = parseInt(dev.bluealsa.volume.split(' ')[0], 10);
+        var closestStep = findClosestVolumeStep(currentVolume, volumeMap);
+
+        volumeMap.forEach(function(step) {
+            var option = E('option', { 'value': step.value }, step.percent);
+            if (step.value === closestStep.value) {
+                option.selected = 'selected';
+            }
+            volumeSelect.appendChild(option);
+        });
+
+        var volumeBtn = E('button', {
+            'class': 'btn cbi-button cbi-button-action',
+            'style': 'margin-left: 8px;',
+            'click': ui.createHandlerFn(view, function() {
+                var newVolume = document.getElementById(volumeId).value;
+                return setVolume({ mac: dev.mac, volume: parseInt(newVolume, 10) });
+            })
+        }, _('Set'));
+
         return E('tr', { 'class': 'tr cbi-section-table-row' }, [
             E('td', { 'class': 'td cbi-value-field' }, dev.name || dev.mac),
             E('td', { 'class': 'td cbi-value-field' }, dev.mac),
-            E('td', { 'class': 'td cbi-value-field' }, dev.paired ? _('Yes') : _('No')),
-            E('td', { 'class': 'td cbi-value-field' }, dev.bonded ? _('Yes') : _('No')),
-            E('td', { 'class': 'td cbi-value-field' }, dev.trusted ? _('Yes') : _('No')),
-            E('td', { 'class': 'td cbi-value-field' }, dev.connected ? _('Yes') : _('No')),
-            E('td', { 'class': 'td cbi-section-table-cell nowrap cbi-section-actions' }, E('div', {}, buttons))
+            E('td', { 'class': 'td cbi-value-field' }, [ codecSelect, codecBtn ]),
+            E('td', { 'class': 'td cbi-value-field' }, [ volumeSelect, volumeBtn ]),
+            E('td', { 'class': 'td cbi-value-field' }, dev.bluealsa.delay ? (dev.bluealsa.delay) : '-')
         ]);
     });
 
@@ -188,6 +334,11 @@ return view.extend({
                 if (devicesEl) {
                     dom.content(devicesEl, renderDevices(devices, view));
                 }
+
+                var audioDevicesEl = document.getElementById('audio_devices_list');
+                if (audioDevicesEl) {
+                    dom.content(audioDevicesEl, renderAudioDevices(devices, view));
+                }
             });
         });
 
@@ -227,24 +378,31 @@ return view.extend({
         }, _('Rename Adapter'));
 
         var deviceTable = E('div', { 'id': 'devices_list' }, E('em', {}, _('Collecting data...')));
+        var audioDeviceTable = E('div', { 'id': 'audio_devices_list' }, E('em', {}, _('Collecting data...')));
 
         return E([], [
             E('h2', {}, _('Bluetooth Management')),
             E('div', { 'class': 'cbi-section' }, [
                 E('p', { id: 'adapter_alias' }, _('Adapter Alias: ...')),
                 E('p', { id: 'service_status' }, _('Collecting data...')),
-                E('div', { 'style': 'margin-top: 12px;' }, [
-                    powerButton,
-                    scanButton
-                ]),
-                E('div', { 'style': 'margin-top: 12px;' }, [
-                    aliasField,
-                    aliasButton
+                E('div', { 'style': 'display: flex; justify-content: space-between; align-items: center; margin-top: 12px;' }, [
+                    E('div', {}, [
+                        powerButton,
+                        scanButton
+                    ]),
+                    E('div', {}, [
+                        aliasField,
+                        aliasButton
+                    ])
                 ])
             ]),
             E('div', { 'class': 'cbi-section' }, [
                 E('h3', {}, _('Discovered & Paired Devices')),
                 deviceTable
+            ]),
+            E('div', { 'class': 'cbi-section' }, [
+                E('h3', {}, _('Connected Audio Devices')),
+                audioDeviceTable
             ])
         ]);
     },

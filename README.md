@@ -17,11 +17,20 @@ This application provides a web interface within LuCI to manage your device's Bl
   - Connect to and disconnect from paired devices.
   - Remove (unpair) existing devices.
 
+- **Audio Management (Requires `bluez-alsa`)**:
+  - View connected audio devices.
+  - Set the audio codec (e.g., SBC, AAC) for a connected device.
+  - Adjust the volume for a connected device.
+
 ## Dependencies
 
-The device pairing functionality, handled by the `root/usr/libexec/bluetooth/bt_pair_exp.sh` script, requires the `expect` package to automate interactions with the `bluetoothctl` utility. 
+This application has the following dependencies:
 
-For OpenWrt, the `expect` package can be obtained from [this repository](https://github.com/sbwml/package_new_expect).
+1.  **`expect`**: Required for the device pairing functionality, which automates interactions with the `bluetoothctl` utility. The `expect` package for OpenWrt can be obtained from [this repository](https://github.com/sbwml/package_new_expect).
+
+2.  **`bluez-alsa`**: Required for the A2DP audio management features. This package provides the necessary backend to connect Bluetooth audio devices to the ALSA sound system. The `bluez-alsa` package for OpenWrt can be obtained from [this repository](https://github.com/sbwml/package_new_bluez-alsa).
+
+To use all features of this application, please ensure both packages are downloaded into your OpenWrt `package` directory before building.
 
 ## Technical Overview
 

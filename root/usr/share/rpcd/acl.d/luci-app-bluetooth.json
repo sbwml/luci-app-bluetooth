@@ -18,6 +18,8 @@
           "connect",
           "disconnect",
           "set_alias",
+          "set_codec",
+          "set_volume",
           "remove_device"
         ]
       }
