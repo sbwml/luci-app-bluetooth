@@ -1,0 +1,150 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-12 17:08+0800\n"
+"PO-Revision-Date: 2026-03-12 17:00+0000\n"
+"Last-Translator: sbwml <sbwml@cooluc.com>\n"
+"Language-Team: Chinese (Simplified Han script)\n"
+"Language: zh_Hans\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: root/usr/share/luci/menu.d/luci-app-bluetooth.json:3
+msgid "Bluetooth"
+msgstr "蓝牙"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:66
+msgid "RUNNING"
+msgstr "蓝牙已启用"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:68
+msgid "NOT RUNNING"
+msgstr "蓝牙已关闭"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:75
+msgid "No devices found."
+msgstr "未找到设备。"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:79
+msgid "Name"
+msgstr "名称"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:80
+msgid "MAC Address"
+msgstr "MAC 地址"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:81
+msgid "Paired"
+msgstr "已配对"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:82
+msgid "Bonded"
+msgstr "已绑定"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:83
+msgid "Trusted"
+msgstr "已信任"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:84
+msgid "Connected"
+msgstr "已连接"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:85
+msgid "Actions"
+msgstr "操作"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:92
+msgid "Pairing..."
+msgstr "配对中..."
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:92
+msgid ""
+"Attempting to pair with %s. Please check your device to confirm the pairing "
+"request."
+msgstr "正在尝试与 %s 配对。请在您的设备上确认配对请求。"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:96
+msgid "Pairing request sent. The device list will refresh automatically."
+msgstr "已发送配对请求。设备列表将自动刷新。"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:99
+msgid "Failed to send pairing request: %s"
+msgstr "发送配对请求失败: %s"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:102
+msgid "Pair"
+msgstr "配对"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:109
+msgid "Connect"
+msgstr "连接"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:116
+msgid "Disconnect"
+msgstr "断开连接"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:124
+msgid "Remove"
+msgstr "删除"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:142
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:143
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:144
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:145
+msgid "Yes"
+msgstr "是"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:142
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:143
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:144
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:145
+msgid "No"
+msgstr "否"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:179
+msgid "Turn Off"
+msgstr "关闭"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:179
+msgid "Turn On"
+msgstr "开启"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:184
+msgid "Adapter Alias:"
+msgstr "适配器别名："
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:201
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:229
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:235
+msgid "Collecting data..."
+msgstr "正在收集数据..."
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:206
+msgid "Scanning..."
+msgstr "扫描中..."
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:206
+msgid "Scanning for devices. This may take a few moments."
+msgstr "正在扫描设备，请稍候。"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:216
+msgid "Scan for Devices"
+msgstr "扫描设备"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:227
+msgid "Rename Adapter"
+msgstr "重命名"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:232
+msgid "Bluetooth Management"
+msgstr "蓝牙管理"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:234
+msgid "Adapter Alias: ..."
+msgstr "适配器别名：..."
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:246
+msgid "Discovered & Paired Devices"
+msgstr "已发现和已配对的设备"
+

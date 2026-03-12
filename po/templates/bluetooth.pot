@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-12 17:06+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:66
+msgid "RUNNING"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:68
+msgid "NOT RUNNING"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:75
+msgid "No devices found."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:79
+msgid "Name"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:80
+msgid "MAC Address"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:81
+msgid "Paired"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:82
+msgid "Bonded"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:83
+msgid "Trusted"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:84
+msgid "Connected"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:85
+msgid "Actions"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:92
+msgid "Pairing..."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:92
+#, javascript-format
+msgid ""
+"Attempting to pair with %s. Please check your device to confirm the pairing "
+"request."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:96
+msgid "Pairing request sent. The device list will refresh automatically."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:99
+#, javascript-format
+msgid "Failed to send pairing request: %s"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:102
+msgid "Pair"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:109
+msgid "Connect"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:116
+msgid "Disconnect"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:124
+msgid "Remove"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:142
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:143
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:144
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:145
+msgid "Yes"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:142
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:143
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:144
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:145
+msgid "No"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:179
+msgid "Turn Off"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:179
+msgid "Turn On"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:184
+msgid "Adapter Alias:"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:201
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:229
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:235
+msgid "Collecting data..."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:206
+msgid "Scanning..."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:206
+msgid "Scanning for devices. This may take a few moments."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:216
+msgid "Scan for Devices"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:227
+msgid "Rename Adapter"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:232
+msgid "Bluetooth Management"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:234
+msgid "Adapter Alias: ..."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:246
+msgid "Discovered & Paired Devices"
+msgstr ""
