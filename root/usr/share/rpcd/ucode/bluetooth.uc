@@ -29,16 +29,35 @@ const methods = {
         call: function() {
             const output = run_btctl('show');
             if (!output) {
-                return { powered: false, alias: 'Unknown' };
+                return {
+                    controller: 'Unknown',
+                    powered: false,
+                    name: 'Unknown',
+                    alias: 'Unknown',
+                    discoverable: false,
+                    pairable: false,
+                    discovering: false
+                };
             }
 
-            const powered = match(output, /Powered:\s*yes/);
-            const alias_match = match(output, /Alias:\s*([^\n]+)/);
-            const alias = alias_match ? trim(alias_match[1]) : 'Unknown';
+            function parse_value(regex) {
+                const m = match(output, regex);
+                return m ? trim(m[1]) : null;
+            }
+
+            function parse_bool(regex) {
+                const val = parse_value(regex);
+                return val === 'yes';
+            }
 
             return {
-                powered: !!powered,
-                alias: alias
+                controller: parse_value(/Controller\s+([0-9A-F:]+)/) || 'Unknown',
+                powered: parse_bool(/Powered:\s*([a-z]+)/),
+                name: parse_value(/Name:\s*([^\n]+)/) || 'Unknown',
+                alias: parse_value(/Alias:\s*([^\n]+)/) || 'Unknown',
+                discoverable: parse_bool(/Discoverable:\s*([a-z]+)/),
+                pairable: parse_bool(/Pairable:\s*([a-z]+)/),
+                discovering: parse_bool(/Discovering:\s*([a-z]+)/)
             };
         }
     },
