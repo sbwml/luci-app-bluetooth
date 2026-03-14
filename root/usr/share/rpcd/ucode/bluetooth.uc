@@ -92,7 +92,7 @@ const methods = {
         call: function(req) {
             const val = req.args.on;
             const is_on = (val === true || val === 1 || val === "1" || val === "true" || val === "on");
-            const cmd = is_on ? '--timeout 8 scan on' : 'scan off';
+            const cmd = is_on ? '--timeout 5 scan on' : 'scan off';
             run_btctl(cmd);
             return { success: true };
         }
@@ -106,7 +106,7 @@ const methods = {
             }
 
             const cmd = `unbuffer /usr/libexec/bluetooth/bt_pair_exp.sh ${shellquote(req.args.mac)}`;
-            
+
             try {
                 const handle = popen(cmd, 'r');
                 if (!handle) {

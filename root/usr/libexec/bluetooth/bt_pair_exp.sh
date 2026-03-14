@@ -13,6 +13,7 @@ spawn bluetoothctl
 expect {
 	-re "bluetoothctl.*#" {}
 	-re "bluetoothctl.*>" {}
+	-re ">" {}
 }
 
 send "pair $mac\r"

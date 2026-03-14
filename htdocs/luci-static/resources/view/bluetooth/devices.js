@@ -361,7 +361,7 @@ return view.extend({
                             ui.hideModal();
                             return view.load().then(view.render.bind(view));
                         });
-                    }, 10000); // Wait scan for 10 seconds
+                    }, 5000); // Wait scan for 5 seconds
                 });
             })
         }, _('Scan for Devices'));
