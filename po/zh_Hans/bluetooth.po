@@ -15,11 +15,11 @@ msgid "Bluetooth"
 msgstr "蓝牙"
 
 #: htdocs/luci-static/resources/view/bluetooth/devices.js:78
-msgid "RUNNING"
+msgid "Bluetooth is enabled"
 msgstr "蓝牙已启用"
 
 #: htdocs/luci-static/resources/view/bluetooth/devices.js:80
-msgid "NOT RUNNING"
+msgid "Bluetooth is disabled"
 msgstr "蓝牙已关闭"
 
 #: htdocs/luci-static/resources/view/bluetooth/devices.js:92

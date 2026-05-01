@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: htdocs/luci-static/resources/view/bluetooth/devices.js:78
-msgid "RUNNING"
+msgid "Bluetooth is enabled"
 msgstr ""
 
 #: htdocs/luci-static/resources/view/bluetooth/devices.js:80
-msgid "NOT RUNNING"
+msgid "Bluetooth is disabled"
 msgstr ""
 
 #: htdocs/luci-static/resources/view/bluetooth/devices.js:92

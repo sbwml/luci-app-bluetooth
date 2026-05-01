@@ -75,9 +75,9 @@ function renderStatus(status) {
     var spanTemp = '<em><span style="color:%s"><strong>%s</strong></span></em>';
     var renderHTML;
     if (status.powered) {
-        renderHTML = spanTemp.format('green', _('RUNNING'));
+        renderHTML = spanTemp.format('green', _('Bluetooth is enabled'));
     } else {
-        renderHTML = spanTemp.format('red', _('NOT RUNNING'));
+        renderHTML = spanTemp.format('red', _('Bluetooth is disabled'));
     }
     return renderHTML;
 }
