@@ -39,7 +39,7 @@ msgid "Running"
 msgstr "运行中"
 
 #: htdocs/luci-static/resources/view/bluetooth/devices.js:96
-msgid "Format"
+msgid "Audio Format"
 msgstr "音频格式"
 
 #: htdocs/luci-static/resources/view/bluetooth/devices.js:97

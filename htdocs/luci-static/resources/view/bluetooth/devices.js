@@ -93,7 +93,7 @@ function renderBluealsaTooltip(bluealsa) {
         'transport': _('Transport'),
         'mode': _('Mode'),
         'running': _('Running'),
-        'format': _('Format'),
+        'format': _('Audio Format'),
         'channels': _('Channels'),
         'channelMap': _('Channel Map'),
         'rate': _('Rate'),
