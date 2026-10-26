@@ -1,0 +1,104 @@
+/* bluetooth.css */
+
+:root {
+    --bt-mobile-breakpoint: 640px;
+}
+
+/* 移动端专属卡片样式 (纯原生结构) */
+.bt-mobile-cards { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+}
+
+.bt-card { 
+    border: 1px solid #ddd; 
+    border-radius: 6px; 
+    background: #fff; 
+    padding: 12px; 
+    box-sizing: border-box; 
+}
+
+.bt-card-row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+    padding: 8px 0; 
+    border-bottom: 1px solid #f0f0f0; 
+    gap: 10px; 
+}
+
+.bt-card-row:last-child { 
+    border-bottom: none; 
+}
+
+.bt-card-label { 
+    font-weight: bold; 
+    color: #555; 
+    flex-shrink: 0; 
+}
+
+.bt-card-value { 
+    text-align: right; 
+    word-break: break-all; 
+    overflow-wrap: break-word; 
+    flex: 1; 
+}
+
+.bt-card-section { 
+    display: flex; 
+    flex-direction: column; 
+    padding: 8px 0; 
+    border-bottom: 1px solid #f0f0f0; 
+    gap: 8px; 
+}
+
+.bt-card-form { 
+    display: flex; 
+    gap: 8px; 
+    width: 100%; 
+}
+
+.bt-card-form select { 
+    flex: 1; 
+    max-width: 100%; 
+    box-sizing: border-box; 
+}
+
+.bt-card-form button { 
+    flex-shrink: 0; 
+    margin: 0 !important; 
+}
+
+.bt-card-actions { 
+    padding-top: 8px; 
+}
+
+.bt-card-btn-group { 
+    display: flex; 
+    gap: 8px; 
+    width: 100%; 
+}
+
+.bt-card-btn-group button { 
+    flex: 1; 
+    margin: 0 !important; 
+}
+
+/* 顶部工具栏自适应 */
+@media (max-width: 640px) {
+    .bt-header-toolbar > div:nth-child(2) { 
+        display: flex !important; 
+        width: 100% !important; 
+        margin-top: 8px !important; 
+    }
+    .bt-header-toolbar > div:nth-child(2) input { 
+        flex: 1 !important; 
+        width: 100% !important; 
+        min-width: 0 !important; 
+        margin-right: 8px !important; 
+    }
+    .bt-header-toolbar > div:nth-child(2) button { 
+        white-space: nowrap !important; 
+    }
+}
