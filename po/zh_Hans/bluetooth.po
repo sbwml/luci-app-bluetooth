@@ -228,3 +228,12 @@ msgstr "已发现和已配对的设备"
 msgid "Connected Audio Devices"
 msgstr "已连接的音频设备"
 
+msgid "Failed to change Bluetooth power."
+msgstr "无法切换蓝牙开关。"
+
+msgid "Bluetooth power changed. Could not save the startup state."
+msgstr "蓝牙已切换，开机状态保存失败。"
+
+msgid "With one Bluetooth adapter, the power switch also sets Bluetooth power at startup."
+msgstr "只有一个蓝牙适配器时，此开关也会设置蓝牙的开机状态。"
+
