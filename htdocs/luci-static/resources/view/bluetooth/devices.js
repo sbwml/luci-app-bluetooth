@@ -20,7 +20,8 @@ const getDevices = rpc.declare({
 const setPower = rpc.declare({
 	object: 'luci.bluetooth',
 	method: 'set_power',
-	params: [ 'on' ]
+	params: [ 'on', 'remember' ],
+	expect: { '': {} }
 });
 
 const startScan = rpc.declare({
@@ -339,7 +340,12 @@ return view.extend({
 			'id': 'power_button',
 			'class': 'cbi-button',
 			'style': 'margin-right: 8px;',
-			'click': ui.createHandlerFn(this, () => setPower(!view.__status.powered ? 1 : 0))
+			'click': ui.createHandlerFn(this, () => setPower(view.__status.powered ? 0 : 1, true).then(result => {
+				if (!result.success)
+					ui.addNotification(null, E('p', _('Failed to change Bluetooth power.')), 'error');
+				else if (result.saved === false)
+					ui.addNotification(null, E('p', _('Bluetooth power changed. Could not save the startup state.')), 'warning');
+			}))
 		}, _('Collecting data...'));
 
 		const scanButton = E('button', {
@@ -376,6 +382,7 @@ return view.extend({
 			E('div', { 'class': 'cbi-section' }, [
 				E('p', { id: 'adapter_alias' }, _('Adapter Alias: ...')),
 				E('p', { id: 'service_status' }, _('Collecting data...')),
+				E('p', {}, _('With one Bluetooth adapter, the power switch also sets Bluetooth power at startup.')),
 				E('div', { 'style': 'display: flex; justify-content: space-between; align-items: center; margin-top: 12px;' }, [
 					E('div', {}, [
 						powerButton,

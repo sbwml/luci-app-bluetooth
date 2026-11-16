@@ -2,7 +2,8 @@
 
 'use strict';
 
-import { popen } from 'fs';
+import { chmod, chown, dirname, glob, open, popen, readfile, realpath, rename, rmdir, stat, unlink } from 'fs';
+import { task } from 'uloop';
 
 const shellquote = (s) => {
 	return `'${replace(s, "'", "'\\''")}'`;
@@ -23,6 +24,79 @@ const run_btctl = (command) => {
 		return null;
 	}
 };
+
+const power_policy = (config, is_on) => {
+	const setting = `AutoEnable=${is_on ? 'true' : 'false'}`;
+	const updated = [];
+	let in_policy = false;
+	let policy_start = -1;
+	let replaced = false;
+
+	for (let line in split(config, '\n')) {
+		const section = match(line, /^\s*\[([^]]+)\]\s*$/);
+		if (section) {
+			in_policy = section[1] === 'Policy';
+			if (in_policy && policy_start < 0)
+				policy_start = length(updated) + 1;
+		}
+
+		if (in_policy && match(line, /^\s*AutoEnable\s*=/)) {
+			if (!replaced)
+				push(updated, setting);
+			replaced = true;
+		} else {
+			push(updated, line);
+		}
+	}
+
+	if (!replaced) {
+		if (policy_start >= 0)
+			splice(updated, policy_start, 0, setting);
+		else
+			push(updated, '[Policy]', setting, '');
+	}
+
+	return join('\n', updated);
+};
+
+const save_power_policy = (is_on) => {
+	const config = realpath('/etc/bluetooth/main.conf');
+	const metadata = config && stat(config);
+	if (!metadata)
+		return false;
+
+	const original = readfile(config);
+	if (original === null)
+		return false;
+
+	const updated = power_policy(original, is_on);
+	if (updated === original)
+		return true;
+
+	const mktemp = popen(`mktemp -d ${shellquote(dirname(config) + '/.luci-bluetooth-XXXXXX')}`, 'r');
+	if (!mktemp)
+		return false;
+
+	const directory = trim(mktemp.read('all') ?? '');
+	if (mktemp.close() !== 0 || !directory)
+		return false;
+
+	const temporary = `${directory}/main.conf`;
+	const file = open(temporary, 'w');
+	const written = file?.write(updated);
+	const closed = file?.close();
+	const saved = written === length(updated) && closed &&
+		chown(temporary, metadata.uid, metadata.gid) && chmod(temporary, metadata.mode) &&
+		rename(temporary, config);
+
+	if (!saved)
+		unlink(temporary);
+	rmdir(directory);
+
+	return !!saved;
+};
+
+let power_pending = false;
 
 const methods = {
 	get_status: {
@@ -96,13 +170,34 @@ const methods = {
 	},
 
 	set_power: {
-		args: { on: 0 },
+		args: { on: 0, remember: false },
 		call: function(req) {
+			if (power_pending)
+				return { success: false };
+
 			const val = req.args.on;
 			const is_on = (val === true || val === 1 || val === "1" || val === "true" || val === "on");
-			const cmd = is_on ? 'power on' : 'power off';
-			run_btctl(cmd);
-			return { success: true };
+			const remember = req.args.remember;
+			const worker = task(() => {
+				if (system(['/usr/bin/bluetoothctl', 'power', is_on ? 'on' : 'off'], 3000) !== 0)
+					return { success: false };
+
+				// BlueZ applies AutoEnable to every controller.
+				if (remember) {
+					const adapters = filter(glob('/sys/class/bluetooth/hci[0-9]*') ?? [],
+						path => match(path, /\/hci[0-9]+$/));
+					if (length(adapters) === 1)
+						return { success: true, saved: save_power_policy(is_on) };
+				}
+
+				return { success: true };
+			}, result => {
+				power_pending = false;
+				req.reply(result ?? { success: false });
+			});
+
+			power_pending = !!worker;
+			return worker ? req.defer() : { success: false };
 		}
 	},
 

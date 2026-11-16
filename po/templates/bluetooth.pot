@@ -230,3 +230,15 @@ msgstr ""
 #: htdocs/luci-static/resources/view/bluetooth/devices.js:404
 msgid "Connected Audio Devices"
 msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:345
+msgid "Failed to change Bluetooth power."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:347
+msgid "Bluetooth power changed. Could not save the startup state."
+msgstr ""
+
+#: htdocs/luci-static/resources/view/bluetooth/devices.js:385
+msgid "With one Bluetooth adapter, the power switch also sets Bluetooth power at startup."
+msgstr ""
